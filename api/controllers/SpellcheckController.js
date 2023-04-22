@@ -2,19 +2,34 @@ const User = require('../models/User');
 const authService = require('../services/auth.service');
 const bcryptService = require('../services/bcrypt.service');
 
+const fs = require('fs');
+
+require.extensions['.txt'] = function (module, filename) {
+    module.exports = fs.readFileSync(filename, 'utf8');
+};
+
+const dictionary = require("../resources/dictionary.txt");
+
 const SpellcheckController = () => {
   const spellcheck = async (req, res) => {
     const { word } = req.params;
 
     try {
-      console.log(word)
-      return res.status(200).json({ word });
+      let failed
+
+      if (word.length < 1) failed = true;
+      
+      let initialMatches = dictionary.match(word);
+      if (initialMatches != null && initialMatches.length === 1)
+        return res.status(200).json({ suggestions: [], correct: true });
+      
+
+      return res.status(400).json({ msg: 'Bad Request: Word not found' });
     } catch (err) {
       console.log(err);
       return res.status(500).json({ msg: 'Internal server error' });
     }
 
-    return res.status(400).json({ msg: 'Bad Request: Passwords don\'t match' });
   };
 
   const login = async (req, res) => {
