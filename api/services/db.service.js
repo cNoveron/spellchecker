@@ -41,7 +41,7 @@ const dbService = (environment, migrate) => {
 
   const startDev = async () => {
     try {
-      await authenticateDB();
+      // await authenticateDB();
 
       if (migrate) {
         return startMigrateTrue();
