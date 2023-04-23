@@ -22,17 +22,22 @@ module.exports = function(seq) {
             const fragment = i < 1
                 ? newWord.slice(0,5)
                 : newWord.slice(i-1,i+4);
-            
+
             if (fragment.length < 4)
                 continue;
 
             regexString = seq.length < 5
                 ? `\\b${fragment}|\\b\\B${fragment}|${fragment}\\B\\b|${fragment}\\b`
                 : i < 2
-                    ? `${fragment}\\B|${fragment}\\b`
+                    ? `${fragment}\\B|${fragment}\\b|${fragment.slice(0,i+2)}\\B`
                     : seq.length-4 < i
-                        ? `\\B${fragment}|\\b${fragment}`
-                        : `\\B${fragment}\\B`
+                        ? `\\B${fragment}|\\b${fragment}|\\B${fragment.slice(i,i+4)}`
+                        : `\\B${fragment}\\B`;
+
+            // if (i === 1 && vowel === 'a')
+            //     console.log(regexString);
+            if (fragment === 'nana')
+                console.log(regexString);
 
             regex = new RegExp(regexString, "dg");
             matches = dictionary.match(regex);
