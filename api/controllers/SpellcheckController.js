@@ -1,7 +1,9 @@
 const User = require('../models/User');
 const sanitizeRepeatedChars = require('../functions/sanitizeRepeatedChars');
 const possibleFixesDeep = require('../functions/possibleFixesDeep');
+const possibleFixablesDeep = require('../functions/possibleFixablesDeep');
 
+const _ = require('lodash');
 const fs = require('fs');
 
 require.extensions['.txt'] = function (module, filename) {
@@ -33,9 +35,16 @@ const SpellcheckController = () => {
 
         let withoutRepeatedChars = sanitizeRepeatedChars(word)
         let caseCorrected = withoutRepeatedChars.toLowerCase()
-        let possibleFixes = possibleFixesDeep(caseCorrected, 2)
+        console.log(caseCorrected);
+        let suggestions = _.flattenDeep(possibleFixesDeep(caseCorrected, 4))
+          .concat(
+            _.flattenDeep(possibleFixesDeep(possibleFixablesDeep(caseCorrected,1),1)),
+            _.flattenDeep(possibleFixesDeep(possibleFixablesDeep(caseCorrected,2),1)),
+            _.flattenDeep(possibleFixesDeep(possibleFixablesDeep(caseCorrected,3),1)),
+          )
+        console.log(suggestions);
 
-        return res.status(200).json({ suggestions: possibleFixes, correct: false });
+        return res.status(200).json({ suggestions, correct: false });
 
         // for (let index = word.length; 1 < word.length; index--) {
         //   regexString = `.*\\B` + `${word.substring(0, index)}` + `\\B.*`;
