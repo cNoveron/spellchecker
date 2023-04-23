@@ -19,10 +19,11 @@ module.exports = function(seq) {
             const newWord = i == -1 
                 ? vowel + seq
                 : seq.slice(0, i + 1) + vowel + seq.slice(i + 1);
-            regexString = `(\\s` + `${newWord}` + `\\s)`;
+            regexString = `\\s${newWord}\\s`;
+            // console.log(regexString);
             regex = new RegExp(regexString, "dg");
             matches = dictionary.match(regex);
-
+            
             if (matches !== null && matches !== []) {
                 possibleFixes.push(newWord);
             }
