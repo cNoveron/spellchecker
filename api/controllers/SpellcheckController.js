@@ -15,15 +15,21 @@ const SpellcheckController = () => {
     const { word } = req.params;
 
     try {
-      let failed
+      let failed, initialMatches, regexString, regex
 
       if (word.length < 1) failed = true;
       
-      let initialMatches = dictionary.match(word);
-      if (initialMatches != null && initialMatches.length === 1)
-        return res.status(200).json({ suggestions: [], correct: true });
+      regexString = `(\\s` + `${word}` + `\\s)`;
+      regex = new RegExp(regexString, "dg");
+      console.log(regex);
       
-
+      initialMatches = dictionary.match(regex);
+      console.log(initialMatches);
+      if (initialMatches !== null && initialMatches !== []) {
+        if (initialMatches.length === 1)
+          return res.status(200).json({ suggestions: [], correct: true });
+      }
+      
       return res.status(400).json({ msg: 'Bad Request: Word not found' });
     } catch (err) {
       console.log(err);
