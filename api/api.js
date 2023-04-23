@@ -57,36 +57,31 @@ const possibleFixablesDeep = require('./functions/possibleFixablesDeep');
 const possibleFixesDeep = require('./functions/possibleFixesDeep');
 const possibleFixes = require('./functions/possibleFixes');
 app.get('/test', (req, res) => {
-  // console.log(possibleFixesDeep("gud",4)); // true (can form "guide")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("gud",1),1)); // true (can form "guide")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("gud",2),1)); // true (can form "guide")
 
-  // console.log(possibleFixesDeep("wrd",4)); // true (can form "guide")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("wrd",1),1)); // true (can form "guide")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("wrd",2),1)); // true (can form "guide")
+  // console.log(possibleFixesDeep("blln",2)); // true (can form "kites")
+  // console.log(possibleFixablesDeep("blln",1).flatMap(f => possibleFixes(f))); 
+  // console.log(possibleFixablesDeep("blln",2).flatMap(f => possibleFixes(f))); 
 
-  // console.log(possibleFixesDeep("tll",4)); // true (can form "guide")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("tll",1),1)); // true (can form "guide")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("tll",2),1)); // true (can form "guide")
-
-  // console.log(intercalateVowelsDeep("blln",3)); 
-  // console.log(possibleFixablesDeep("blln",3)); 
-  console.log(possibleFixablesDeep("blln",2).flatMap(f => possibleFixes(f))); 
+  // console.log(possibleFixesDeep("bnna",2)); // true (can form "kites")
+  // console.log(possibleFixablesDeep("bnna",2)); 
+  console.log(possibleFixablesDeep("bnna",2).flatMap(f => possibleFixes(f))); 
+  // console.log(possibleFixablesDeep("bnna",2).flatMap(f => possibleFixes(f))); 
   // console.log(possibleFixables("blln").map(p => possibleFixables(p))); 
 
 
-  // console.log(possibleFixesDeep(possibleFixablesDeep("gud",2),4)); // true (can form "guide")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("ppr",2),4)); // true (can form "paper")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("wrd",2),4)); // true (can form "word")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("frml",2),4)); // true (can form "formal")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("tll",2),4)); // true (can form "tally")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("bgn",2),4)); // true (can form "begin")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("cmp",2),4)); // true (can form "camp")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("plc",2),4)); // true (can form "place")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("dgr",2),4)); // true (can form "dogger")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("kts",2),4)); // false (no English word can be formed)
-  // console.log(possibleFixesDeep(possibleFixablesDeep("vn",2),4)); // true (can form "oven")
-  // console.log(possibleFixesDeep(possibleFixablesDeep("btl",2),4)); // true (can form "bottle")
+  console.log(possibleFixablesDeep("gud",2).flatMap(f => possibleFixes(f))); // true (can form "guide")
+  console.log(possibleFixablesDeep("ppr",2).flatMap(f => possibleFixes(f))); // true (can form "paper")
+  console.log(possibleFixablesDeep("wrd",2).flatMap(f => possibleFixes(f))); // true (can form "word")
+  console.log(possibleFixablesDeep("frml",2).flatMap(f => possibleFixes(f))); // true (can form "formal")
+  console.log(possibleFixablesDeep("tll",2).flatMap(f => possibleFixes(f))); // true (can form "tally")
+  console.log(possibleFixablesDeep("bgn",2).flatMap(f => possibleFixes(f))); // true (can form "begin")
+  console.log(possibleFixablesDeep("cmp",2).flatMap(f => possibleFixes(f))); // true (can form "camp")
+  console.log(possibleFixablesDeep("plc",2).flatMap(f => possibleFixes(f))); // true (can form "place")
+  console.log(possibleFixablesDeep("dgr",2).flatMap(f => possibleFixes(f))); // true (can form "dogger")
+  console.log(possibleFixesDeep("kts",4)); // true (can form "kites")
+  console.log(possibleFixablesDeep("kts",2).flatMap(f => possibleFixes(f))); // true (can form "kites")
+  console.log(possibleFixablesDeep("vn",2).flatMap(f => possibleFixes(f))); // true (can form "oven")
+  console.log(possibleFixablesDeep("btl",2).flatMap(f => possibleFixes(f))); // true (can form "bottle")
   res.status(200).json({})
 })
 
