@@ -2,7 +2,7 @@ const _ = require('lodash');
 const possibleFixes = require('./possibleFixes');
 
 module.exports = function(seq, depth = 1) {
-    const depth1_possibleFixes = possibleFixes(seq)
+    let depth1_possibleFixes = possibleFixes(seq)
     // console.log(depth1_possibleFixes);
     // console.log('-------');
 
