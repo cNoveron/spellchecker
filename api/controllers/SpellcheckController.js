@@ -1,6 +1,5 @@
 const User = require('../models/User');
-const authService = require('../services/auth.service');
-const bcryptService = require('../services/bcrypt.service');
+const sanitizeRepeatedChars = require('../functions/sanitizeRepeatedChars');
 
 const fs = require('fs');
 
@@ -21,41 +20,29 @@ const SpellcheckController = () => {
       
       regexString = `(\\s` + `${word}` + `\\s)`;
       regex = new RegExp(regexString, "dg");
-      console.log(regex);
+      // console.log(regex);
       
       initialMatches = dictionary.match(regex);
-      console.log(initialMatches);
+      // console.log(initialMatches);
       if (initialMatches !== null && initialMatches !== []) {
         if (initialMatches.length === 1)
           return res.status(200).json({ suggestions: [], correct: true });
       }
       else {
-        let r
-        let vowelRepetition_regexStrings = [
-          /a{2,}/dgi,
-          /e{3,}/dgi,
-          /i{2,}/dgi,
-          /o{3,}/dgi,
-          /u{2,}/dgi,
-        ]
-        console.log(vowelRepetition_regexStrings);
-        let vowelRepetition_matches = vowelRepetition_regexStrings.map(s => word.match(s))
-        // let vowelRepetition_matches = vowelRepetition_regexStrings.map(s => word.match(s))
-        // let filtered_vRepMatches = vowelRepetition_matches.filter(e => e !== null)
-        // console.log(filtered_vRepMatches);
-        let vowelFixers = [
-          (acc, curr) => acc.replace(curr,'a'),
-          (acc, curr) => acc.replace(curr,'ee'),
-          (acc, curr) => acc.replace(curr,'i'),
-          (acc, curr) => acc.replace(curr,'oo'),
-          (acc, curr) => acc.replace(curr,'u'),
-        ]
 
-        r = _.zip(vowelRepetition_matches, vowelFixers)
-        r = r.filter(e => e[0] !== null)
-        console.log(r);
-        r = r.reduce((acc, curr) => curr[0] === null ? null : curr[0].reduce(curr[1], acc), word)
-        console.log(r);
+        let withoutRepeatedChars = sanitizeRepeatedChars(word)
+        let caseCorrected = withoutRepeatedChars.toLowerCase()
+
+        return res.status(200).json({ suggestions: caseCorrected, correct: false });
+
+        // for (let index = word.length; 1 < word.length; index--) {
+        //   regexString = `.*\\B` + `${word.substring(0, index)}` + `\\B.*`;
+        //   regex = new RegExp(regexString, "dg");
+        //   initialMatches = dictionary.match(regex);
+        //   console.log(initialMatches);
+        //   if (1 < initialMatches.length)
+        //     return res.status(200).json({ suggestions: initialMatches, correct: true });
+        // }
       }
       
       return res.status(400).json({ msg: 'Bad Request: Word not found' });
