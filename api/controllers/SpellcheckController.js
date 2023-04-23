@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const sanitizeRepeatedChars = require('../functions/sanitizeRepeatedChars');
+const possibleFixes = require('../functions/possibleFixes');
 const possibleFixesDeep = require('../functions/possibleFixesDeep');
 const possibleFixablesDeep = require('../functions/possibleFixablesDeep');
 
@@ -35,25 +36,13 @@ const SpellcheckController = () => {
 
         let withoutRepeatedChars = sanitizeRepeatedChars(word)
         let caseCorrected = withoutRepeatedChars.toLowerCase()
-        console.log(caseCorrected);
-        let suggestions = _.flattenDeep(possibleFixesDeep(caseCorrected, 4))
-          .concat(
-            _.flattenDeep(possibleFixesDeep(possibleFixablesDeep(caseCorrected,1),1)),
-            _.flattenDeep(possibleFixesDeep(possibleFixablesDeep(caseCorrected,2),1)),
-            _.flattenDeep(possibleFixesDeep(possibleFixablesDeep(caseCorrected,3),1)),
-          )
-        console.log(suggestions);
+        let suggestions = _.union(
+          _.flattenDeep(possibleFixesDeep(caseCorrected, 4)),
+          _.flattenDeep(possibleFixablesDeep(caseCorrected, 2).flatMap(f => possibleFixes(f)))
+        )
+        // let suggestions = possibleFixablesDeep("blln",2).flatMap(f => possibleFixes(f))
 
         return res.status(200).json({ suggestions, correct: false });
-
-        // for (let index = word.length; 1 < word.length; index--) {
-        //   regexString = `.*\\B` + `${word.substring(0, index)}` + `\\B.*`;
-        //   regex = new RegExp(regexString, "dg");
-        //   initialMatches = dictionary.match(regex);
-        //   console.log(initialMatches);
-        //   if (1 < initialMatches.length)
-        //     return res.status(200).json({ suggestions: initialMatches, correct: true });
-        // }
       }
       
       return res.status(400).json({ msg: 'Bad Request: Word not found' });
