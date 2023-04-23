@@ -49,10 +49,13 @@ app.all('/private/*', (req, res, next) => auth(req, res, next));
 app.use('', mappedOpenRoutes);
 app.use('/private', mappedAuthRoutes);
 
+const intercalateVowelsDeep = require('./functions/intercalateVowelsDeep');
+
 const possibleFixables = require('./functions/possibleFixables');
-const possibleFixes = require('./functions/possibleFixes');
 const possibleFixablesDeep = require('./functions/possibleFixablesDeep');
+
 const possibleFixesDeep = require('./functions/possibleFixesDeep');
+const possibleFixes = require('./functions/possibleFixes');
 app.get('/test', (req, res) => {
   // console.log(possibleFixesDeep("gud",4)); // true (can form "guide")
   // console.log(possibleFixesDeep(possibleFixablesDeep("gud",1),1)); // true (can form "guide")
@@ -66,10 +69,12 @@ app.get('/test', (req, res) => {
   // console.log(possibleFixesDeep(possibleFixablesDeep("tll",1),1)); // true (can form "guide")
   // console.log(possibleFixesDeep(possibleFixablesDeep("tll",2),1)); // true (can form "guide")
 
-  console.log(possibleFixesDeep("blln",4)); // true (can form "guide")
-  console.log(possibleFixesDeep(possibleFixables("blln"),1)); // true (can form "guide")
-  console.log(possibleFixesDeep(possibleFixablesDeep("blln",2),1)); // true (can form "guide")
-  console.log(possibleFixesDeep(possibleFixablesDeep("blln",3),1)); // true (can form "guide")
+  // console.log(intercalateVowelsDeep("blln",3)); 
+  // console.log(possibleFixablesDeep("blln",3)); 
+  console.log(possibleFixablesDeep("blln",2).flatMap(f => possibleFixes(f))); 
+  // console.log(possibleFixables("blln").map(p => possibleFixables(p))); 
+
+
   // console.log(possibleFixesDeep(possibleFixablesDeep("gud",2),4)); // true (can form "guide")
   // console.log(possibleFixesDeep(possibleFixablesDeep("ppr",2),4)); // true (can form "paper")
   // console.log(possibleFixesDeep(possibleFixablesDeep("wrd",2),4)); // true (can form "word")
