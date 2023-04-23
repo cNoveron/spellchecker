@@ -35,15 +35,15 @@ module.exports = function (word) {
         new RegExp(`${e[0]}{${e[1]+1},}`,'dgi'),
         (acc, curr) => acc.replace(curr, e[0].repeat(e[1]))
     ])
-    console.log(repetition_regexStringsAndFixers);
+    // console.log(repetition_regexStringsAndFixers);
     let [repetition_regexStrings, repetition_Fixers] = _.unzip(repetition_regexStringsAndFixers)
     let repetition_matches = repetition_regexStrings.map(e => word.match(e))
-    console.log(repetition_matches);
+    // console.log(repetition_matches);
     r = _.zip(repetition_matches, repetition_Fixers)
     r = r.filter(e => e[0] !== null)
-    console.log(r);
+    // console.log(r);
     r = r.reduce((acc, curr) => curr[0] === null ? null : curr[0].reduce(curr[1], acc), word)
-    console.log(r);
+    // console.log(r);
     
     return r
 }

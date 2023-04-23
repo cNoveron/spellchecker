@@ -49,21 +49,39 @@ app.all('/private/*', (req, res, next) => auth(req, res, next));
 app.use('', mappedOpenRoutes);
 app.use('/private', mappedAuthRoutes);
 
-const checkSequence = require('./functions/possibleFixesDeep');
+const possibleFixables = require('./functions/possibleFixables');
+const possibleFixes = require('./functions/possibleFixes');
+const possibleFixablesDeep = require('./functions/possibleFixablesDeep');
+const possibleFixesDeep = require('./functions/possibleFixesDeep');
 app.get('/test', (req, res) => {
+  // console.log(possibleFixesDeep("gud",4)); // true (can form "guide")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("gud",1),1)); // true (can form "guide")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("gud",2),1)); // true (can form "guide")
 
-  console.log(checkSequence("gud",2)); // true (can form "guide")
-  console.log(checkSequence("ppr",2)); // true (can form "paper")
-  console.log(checkSequence("wrd",2)); // true (can form "word")
-  console.log(checkSequence("frml",2)); // true (can form "formal")
-  console.log(checkSequence("tll",2)); // true (can form "tally")
-  console.log(checkSequence("bgn",2)); // true (can form "begin")
-  console.log(checkSequence("cmp",2)); // true (can form "camp")
-  console.log(checkSequence("plc",2)); // true (can form "place")
-  console.log(checkSequence("dgr",2)); // true (can form "dogger")
-  console.log(checkSequence("kts",2)); // false (no English word can be formed)
-  console.log(checkSequence("vn",2)); // true (can form "oven")
-  console.log(checkSequence("btl",2)); // true (can form "bottle")
+  // console.log(possibleFixesDeep("wrd",4)); // true (can form "guide")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("wrd",1),1)); // true (can form "guide")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("wrd",2),1)); // true (can form "guide")
+
+  // console.log(possibleFixesDeep("tll",4)); // true (can form "guide")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("tll",1),1)); // true (can form "guide")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("tll",2),1)); // true (can form "guide")
+
+  console.log(possibleFixesDeep("blln",4)); // true (can form "guide")
+  console.log(possibleFixesDeep(possibleFixables("blln"),1)); // true (can form "guide")
+  console.log(possibleFixesDeep(possibleFixablesDeep("blln",2),1)); // true (can form "guide")
+  console.log(possibleFixesDeep(possibleFixablesDeep("blln",3),1)); // true (can form "guide")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("gud",2),4)); // true (can form "guide")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("ppr",2),4)); // true (can form "paper")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("wrd",2),4)); // true (can form "word")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("frml",2),4)); // true (can form "formal")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("tll",2),4)); // true (can form "tally")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("bgn",2),4)); // true (can form "begin")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("cmp",2),4)); // true (can form "camp")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("plc",2),4)); // true (can form "place")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("dgr",2),4)); // true (can form "dogger")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("kts",2),4)); // false (no English word can be formed)
+  // console.log(possibleFixesDeep(possibleFixablesDeep("vn",2),4)); // true (can form "oven")
+  // console.log(possibleFixesDeep(possibleFixablesDeep("btl",2),4)); // true (can form "bottle")
   res.status(200).json({})
 })
 
