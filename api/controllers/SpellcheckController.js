@@ -29,6 +29,34 @@ const SpellcheckController = () => {
         if (initialMatches.length === 1)
           return res.status(200).json({ suggestions: [], correct: true });
       }
+      else {
+        let r
+        let vowelRepetition_regexStrings = [
+          /a{2,}/dgi,
+          /e{3,}/dgi,
+          /i{2,}/dgi,
+          /o{3,}/dgi,
+          /u{2,}/dgi,
+        ]
+        console.log(vowelRepetition_regexStrings);
+        let vowelRepetition_matches = vowelRepetition_regexStrings.map(s => word.match(s))
+        // let vowelRepetition_matches = vowelRepetition_regexStrings.map(s => word.match(s))
+        // let filtered_vRepMatches = vowelRepetition_matches.filter(e => e !== null)
+        // console.log(filtered_vRepMatches);
+        let vowelFixers = [
+          (acc, curr) => acc.replace(curr,'a'),
+          (acc, curr) => acc.replace(curr,'ee'),
+          (acc, curr) => acc.replace(curr,'i'),
+          (acc, curr) => acc.replace(curr,'oo'),
+          (acc, curr) => acc.replace(curr,'u'),
+        ]
+
+        r = _.zip(vowelRepetition_matches, vowelFixers)
+        r = r.filter(e => e[0] !== null)
+        console.log(r);
+        r = r.reduce((acc, curr) => curr[0] === null ? null : curr[0].reduce(curr[1], acc), word)
+        console.log(r);
+      }
       
       return res.status(400).json({ msg: 'Bad Request: Word not found' });
     } catch (err) {
