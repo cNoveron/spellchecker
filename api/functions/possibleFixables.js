@@ -34,10 +34,6 @@ module.exports = function(seq) {
                         ? `\\B${fragment}|\\b${fragment}|\\B${fragment.slice(i,i+4)}`
                         : `\\B${fragment}\\B`;
 
-            // if (i === 1 && vowel === 'a')
-            //     console.log(regexString);
-            if (fragment === 'nana')
-                console.log(regexString);
 
             regex = new RegExp(regexString, "dg");
             matches = dictionary.match(regex);
