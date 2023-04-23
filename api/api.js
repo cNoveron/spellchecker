@@ -49,6 +49,24 @@ app.all('/private/*', (req, res, next) => auth(req, res, next));
 app.use('', mappedOpenRoutes);
 app.use('/private', mappedAuthRoutes);
 
+const checkSequence = require('./functions/possibleFixesDeep');
+app.get('/test', (req, res) => {
+
+  console.log(checkSequence("gud",2)); // true (can form "guide")
+  console.log(checkSequence("ppr",2)); // true (can form "paper")
+  console.log(checkSequence("wrd",2)); // true (can form "word")
+  console.log(checkSequence("frml",2)); // true (can form "formal")
+  console.log(checkSequence("tll",2)); // true (can form "tally")
+  console.log(checkSequence("bgn",2)); // true (can form "begin")
+  console.log(checkSequence("cmp",2)); // true (can form "camp")
+  console.log(checkSequence("plc",2)); // true (can form "place")
+  console.log(checkSequence("dgr",2)); // true (can form "dogger")
+  console.log(checkSequence("kts",2)); // false (no English word can be formed)
+  console.log(checkSequence("vn",2)); // true (can form "oven")
+  console.log(checkSequence("btl",2)); // true (can form "bottle")
+  res.status(200).json({})
+})
+
 server.listen(config.port, () => {
   if (environment !== 'production' &&
     environment !== 'development' &&

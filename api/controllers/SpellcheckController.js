@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const sanitizeRepeatedChars = require('../functions/sanitizeRepeatedChars');
+const possibleFixesDeep = require('../functions/possibleFixesDeep');
 
 const fs = require('fs');
 
@@ -32,8 +33,9 @@ const SpellcheckController = () => {
 
         let withoutRepeatedChars = sanitizeRepeatedChars(word)
         let caseCorrected = withoutRepeatedChars.toLowerCase()
+        let possibleFixes = possibleFixesDeep(caseCorrected, 2)
 
-        return res.status(200).json({ suggestions: caseCorrected, correct: false });
+        return res.status(200).json({ suggestions: possibleFixes, correct: false });
 
         // for (let index = word.length; 1 < word.length; index--) {
         //   regexString = `.*\\B` + `${word.substring(0, index)}` + `\\B.*`;
