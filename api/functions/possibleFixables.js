@@ -29,7 +29,7 @@ module.exports = function(seq) {
             regexString = seq.length < 5
                 ? `\\b${fragment}|\\b\\B${fragment}|${fragment}\\B\\b|${fragment}\\b`
                 : i < 2
-                    ? `${fragment}\\B|${fragment}\\b|${fragment.slice(0,i+2)}\\B`
+                    ? `${fragment}\\B|${fragment}\\b|${fragment.slice(0,i+3)}\\B`
                     : seq.length-4 < i
                         ? `\\B${fragment}|\\b${fragment}|\\B${fragment.slice(i,i+4)}`
                         : `\\B${fragment}\\B`;
