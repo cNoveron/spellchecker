@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Search from "react-searchbox-awesome";
 import "./styles.css";
-/*
-example data. USA states.
-the componenet requires an array of object with a property "title".
-  []{title: string}
-*/
-import { states } from "./states.data";
 
 function App() {
   const [filtered, setFiltered] = useState([]);
@@ -17,9 +11,9 @@ function App() {
     if (input.length < 3) {
       setFiltered([]);
     } else {
-      const result = states.filter(obj => {
-        return obj.name.toLowerCase().includes(input);
-      });
+      // const result = states.filter(obj => {
+      //   return obj.name.toLowerCase().includes(input);
+      // });
       setFiltered(result);
     }
   };
@@ -37,11 +31,6 @@ function App() {
   const clickHandler = e => {
     const searchitem = JSON.parse(e.target.dataset.searchitem);
     console.log("Click click!", searchitem);
-  };
-
-  // what to happen when escape is pressed. in our example - nothing.
-  const escHandler = e => {
-    console.log("Escape pressed");
   };
 
   // this is to close the searchlist when you click outside of it.
