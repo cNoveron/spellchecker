@@ -4,28 +4,24 @@ import Search from "react-searchbox-awesome";
 
 function App() {
   const [filtered, setFiltered] = useState([]);
-  const [waiting, setWaiting] = useState(false);
   const [previousEvent, setPreviousEvent] = useState(null);
 
   // here the data is filtered as you search
   const inputHandler = e => {
-    const input = e.target.value;
     if (previousEvent) previousEvent.preventDefault();
     setPreviousEvent(e)
+    const input = e.target.value;
     if (input.length < 3) {
       setFiltered([]);
     } else {
       setTimeout(() => {
-          if(!waiting) {
-            fetch(`http://localhost:31337/spellcheck/${input}`)
-              .then(async response => {
-                return await response.json()
-              })
-              .then(r => {
-                setFiltered(r.suggestions.map(s => ({'name': s})))
-                setWaiting(false)
-              })
-          }
+        fetch(`http://localhost:31337/spellcheck/${input}`)
+          .then(async response => {
+              return await response.json()
+          })
+          .then(r => {
+            setFiltered(r.suggestions.map(s => ({'name': s})))
+          })
         },
         500
       )
