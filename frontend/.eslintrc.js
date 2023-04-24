@@ -6,6 +6,8 @@ module.exports = {
     'plugin:jest/recommended'
   ],
   rules: {
+    'no-console': 'off',
+    'no-undef': 'off',
     // 'no-unused-vars': ['error', { vars: 'all', args: 'none' }], // prevent lint errors if you don't use some function arguments
     // 'no-console': ['off'], // I like to use the console
 
