@@ -49,8 +49,6 @@ app.all('/private/*', (req, res, next) => auth(req, res, next));
 app.use('', mappedOpenRoutes);
 app.use('/private', mappedAuthRoutes);
 
-const intercalateVowelsDeep = require('./functions/intercalateVowelsDeep');
-
 const possibleFixables = require('./functions/possibleFixables');
 const possibleFixablesDeep = require('./functions/possibleFixablesDeep');
 
