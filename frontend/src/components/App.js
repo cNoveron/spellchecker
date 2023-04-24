@@ -1,19 +1,34 @@
+import { set } from "lodash";
 import React, { useState, useEffect } from "react";
 import Search from "react-searchbox-awesome";
 
 function App() {
   const [filtered, setFiltered] = useState([]);
+  const [waiting, setWaiting] = useState(false);
+  const [previousEvent, setPreviousEvent] = useState(null);
 
   // here the data is filtered as you search
   const inputHandler = e => {
-    const input = e.target.value.toLowerCase();
+    const input = e.target.value;
+    if (previousEvent) previousEvent.preventDefault();
+    setPreviousEvent(e)
     if (input.length < 3) {
       setFiltered([]);
     } else {
-      // const result = states.filter(obj => {
-      //   return obj.name.toLowerCase().includes(input);
-      // });
-      setFiltered(result);
+      setTimeout(() => {
+          if(!waiting) {
+            fetch(`http://localhost:31337/spellcheck/${input}`)
+              .then(async response => {
+                return await response.json()
+              })
+              .then(r => {
+                setFiltered(r.suggestions.map(s => ({'name': s})))
+                setWaiting(false)
+              })
+          }
+        },
+        500
+      )
     }
   };
 
@@ -28,8 +43,7 @@ function App() {
 
   // same as above
   const clickHandler = e => {
-    const searchitem = JSON.parse(e.target.dataset.searchitem);
-    console.log("Click click!", searchitem);
+    inputHandler(e)
   };
 
   // this is to close the searchlist when you click outside of it.
@@ -88,9 +102,9 @@ function App() {
         mapping={{ title: "name" }} // when they don't correspond, allows to map the title of the search item and the name property in the filtered data.
         style={style1} // child elements inherit some styles.
         activeStyle={activeStyle2} // hover, focus, active color.
-        placeholder={"Search for states..."} // input placeholder.
+        placeholder={"Type your words here."} // input placeholder.
         shortcuts={true} // hide or show span elements that display shortcuts.
-        onEnter={enterHandler} // applies only to the list "li" element
+        // onEnter={enterHandler} // applies only to the list "li" element
         onInput={inputHandler}
         onClick={clickHandler} // applies only to the list "li" element
       />
