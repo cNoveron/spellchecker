@@ -40,7 +40,6 @@ const SpellcheckController = () => {
           _.flattenDeep(possibleFixesDeep(caseCorrected, 4)),
           _.flattenDeep(possibleFixablesDeep(caseCorrected, 2).flatMap(f => possibleFixes(f)))
         )
-        // let suggestions = possibleFixablesDeep("blln",2).flatMap(f => possibleFixes(f))
 
         return res.status(200).json({ suggestions, correct: false });
       }
