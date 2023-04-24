@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Search from "react-searchbox-awesome";
-import "./styles.css";
 
 function App() {
   const [filtered, setFiltered] = useState([]);
@@ -94,7 +93,6 @@ function App() {
         onEnter={enterHandler} // applies only to the list "li" element
         onInput={inputHandler}
         onClick={clickHandler} // applies only to the list "li" element
-        onEsc={escHandler} // applies to the entire component
       />
     </div>
   );
