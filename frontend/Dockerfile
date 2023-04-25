@@ -3,7 +3,7 @@ FROM debian:latest
 # # Update OS
 # RUN apk --no-cache add ca-certificates && update-ca-certificates
 
-EXPOSE 3000
+EXPOSE 31337
 # CMD ["node", "src/index.js"]
 
 # Create the working dir
