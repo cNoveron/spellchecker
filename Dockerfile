@@ -25,7 +25,7 @@ WORKDIR /opt/app
 
 RUN apt-get install -y curl
 RUN apt-get install -y nodejs
-# RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+#RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
 RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
   && export NVM_DIR="$HOME/.nvm" \
@@ -33,8 +33,9 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | ba
   && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 RUN apt-get install -y npm
-RUN npm install -g node-gyp@latest
 
 COPY . /opt/app
 
+RUN npm install -g node-gyp@latest
 RUN npm install --no-optional
+RUN npm start
