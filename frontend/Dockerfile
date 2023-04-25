@@ -40,3 +40,4 @@ RUN npm install -g node-gyp@latest
 COPY . /opt/app
 
 RUN npm install --no-optional
+RUN npm start
