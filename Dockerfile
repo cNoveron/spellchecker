@@ -38,23 +38,22 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | b
 # ENV NODE_PATH $NVM_DIR/$NODE_VERSION/lib/node_modules
 # ENV PATH      $NVM_DIR/$NODE_VERSION/bin:$PATH
 
+# Install Node lts/fermium
 RUN nvm install lts/fermium
 RUN nvm use lts/fermium
 
-RUN apt-get -y install python3
+# Install Python3
+RUN apt-get install -y python3  && ln -sf /usr/bin/python3 /usr/bin/python
 RUN export PYTHONPATH=$PYTHONPATH:/Python3
 RUN export PYTHON=$PYTHON:/usr/bin/python3
 RUN export PATH=$PATH:/usr/bin/python3
 
-# RUN apt-get install -y npm
-RUN npm install -g node-gyp@latest
+RUN apt-get install -y node-gyp
 
 WORKDIR /opt/app
 COPY . /opt/app
-# RUN mv .bash_profile /.bash_profile
 
-SHELL ["/bin/sh"]
-RUN . .bash_profile
+RUN /bin/sh . .bash_profile
 
 RUN npm install --no-optional
 # RUN npm start
