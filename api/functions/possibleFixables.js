@@ -35,7 +35,7 @@ module.exports = function(seq) {
                         : `\\B${fragment}\\B`;
 
 
-            regex = new RegExp(regexString, "dg");
+            regex = new RegExp(regexString, "g");
             matches = dictionary.match(regex);
 
             if (matches !== null && matches !== []) {

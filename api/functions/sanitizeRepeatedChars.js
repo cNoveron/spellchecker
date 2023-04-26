@@ -32,7 +32,7 @@ module.exports = function (word) {
     }
     let repetition_regexStringsAndFixers = Object.entries(reps)
     .map(e => [
-        new RegExp(`${e[0]}{${e[1]+1},}`,'dgi'),
+        new RegExp(`${e[0]}{${e[1]+1},}`,'gi'),
         (acc, curr) => acc.replace(curr, e[0].repeat(e[1]))
     ])
     // console.log(repetition_regexStringsAndFixers);

@@ -21,7 +21,7 @@ module.exports = function(seq) {
                 : seq.slice(0, i + 1) + vowel + seq.slice(i + 1);
             regexString = `\\s${newWord}\\s`;
             // console.log(regexString);
-            regex = new RegExp(regexString, "dg");
+            regex = new RegExp(regexString, "g");
             matches = dictionary.match(regex);
             
             if (matches !== null && matches !== []) {
