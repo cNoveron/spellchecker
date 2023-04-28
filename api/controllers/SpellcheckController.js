@@ -3,6 +3,8 @@ const sanitizeRepeatedChars = require('../functions/sanitizeRepeatedChars');
 const possibleFixes = require('../functions/possibleFixes');
 const possibleFixesDeep = require('../functions/possibleFixesDeep');
 const possibleFixablesDeep = require('../functions/possibleFixablesDeep');
+const fuzzyMatching = require('fuzzy-matching');
+ 
 
 const _ = require('lodash');
 const fs = require('fs');
@@ -13,6 +15,9 @@ require.extensions['.txt'] = function (module, filename) {
 
 const dictionary = require("../resources/dictionary.txt");
 
+var fm = new fuzzyMatching(dictionary.split('\n'));
+// Finds words
+
 const SpellcheckController = () => {
   const spellcheck = async (req, res) => {
     const { word } = req.params;
@@ -22,7 +27,7 @@ const SpellcheckController = () => {
 
       if (word.length < 1) failed = true;
       
-      regexString = `(\\s` + `${word}` + `\\s)`;
+      regexString = `\\s${word}\\s`;
       regex = new RegExp(regexString, "dg");
       // console.log(regex);
       
@@ -38,7 +43,7 @@ const SpellcheckController = () => {
         let caseCorrected = withoutRepeatedChars.toLowerCase()
         let suggestions = _.union(
           _.flattenDeep(possibleFixesDeep(caseCorrected, 4)),
-          _.flattenDeep(possibleFixablesDeep(caseCorrected, 2).flatMap(f => possibleFixes(f)))
+          _.flattenDeep(possibleFixablesDeep(caseCorrected, 1).flatMap(f => fm.get(f, { maxChanges: 2 }).value))
         )
 
         return res.status(200).json({ suggestions, correct: false });
