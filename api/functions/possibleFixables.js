@@ -4,6 +4,8 @@ require.extensions['.txt'] = function (module, filename) {
 };
 const dictionary = require("../resources/dictionary.txt");
 
+const fuzzyMatching = require('fuzzy-matching');
+const fm = new fuzzyMatching(dictionary.split('\n'));
 
 
 //This function first defines an array of vowels to use, and then loops through the input sequence and adds each vowel between consecutive pairs of letters. It then checks whether each resulting word can form a valid English word using the checkWord() function from my previous answer. The function returns true if at least one valid English word can be formed, and false otherwise.
@@ -26,17 +28,19 @@ module.exports = function(seq) {
             if (fragment.length < 4)
                 continue;
 
-            regexString = seq.length < 5
-                ? `\\b${fragment}|\\b\\B${fragment}|${fragment}\\B\\b|${fragment}\\b`
-                : i < 2
-                    ? `${fragment}\\B|${fragment}\\b|${fragment.slice(0,i+3)}\\B`
-                    : seq.length-4 < i
-                        ? `\\B${fragment}|\\b${fragment}|\\B${fragment.slice(i,i+4)}`
-                        : `\\B${fragment}\\B`;
+            // regexString = seq.length < 5
+            //     ? `\\b${fragment}|\\b\\B${fragment}|${fragment}\\B\\b|${fragment}\\b`
+            //     : i < 2
+            //         ? `${fragment}\\B|${fragment}\\b|${fragment.slice(0,i+3)}\\B`
+            //         : seq.length-4 < i
+            //             ? `\\B${fragment}|\\b${fragment}|\\B${fragment.slice(i,i+4)}`
+            //             : `\\B${fragment}\\B`;
 
 
-            regex = new RegExp(regexString, "g");
-            matches = dictionary.match(regex);
+            // regex = new RegExp(regexString, "g");
+            // matches = dictionary.match(regex);
+
+            matches = fm.get(fragment, { maxChanges: 1 }).value
 
             if (matches !== null && matches !== []) {
                 possibleFixables.push(newWord);

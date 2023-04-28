@@ -40,10 +40,11 @@ const SpellcheckController = () => {
 
         let withoutRepeatedChars = sanitizeRepeatedChars(word)
         let caseCorrected = withoutRepeatedChars.toLowerCase()
-        let suggestions = _.union(
-          _.flattenDeep(possibleFixesDeep(caseCorrected, 4)),
-          _.flattenDeep(possibleFixablesDeep(caseCorrected, 1).flatMap(f => fm.get(f, { maxChanges: 2 }).value))
-        )
+        let suggestions = _.compact(_.union(
+          // _.flattenDeep(possibleFixesDeep(caseCorrected, 4)),
+          _.flattenDeep(possibleFixablesDeep(caseCorrected, 1)
+            .flatMap(f => fm.get(f, { maxChanges: 2 }).value))
+        ))
 
         return res.status(200).json({ suggestions, correct: false });
       }
