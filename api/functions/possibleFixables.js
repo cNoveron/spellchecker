@@ -18,7 +18,7 @@ module.exports = function(seq) {
         for (const vowel of vowels) {
             const newWord = i == -1 
                 ? vowel + seq
-                : seq.slice(0, i+1) + vowel + seq.slice(i+1);
+                : seq.slice(0,i+1) + vowel + seq.slice(i+1);
             const fragment = i < 1
                 ? newWord.slice(0,5)
                 : newWord.slice(i-1,i+4);
