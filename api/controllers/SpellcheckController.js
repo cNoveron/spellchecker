@@ -27,12 +27,11 @@ const SpellcheckController = () => {
 
       if (word.length < 1) failed = true;
       
-      regexString = `\\s${word}\\s`;
-      regex = new RegExp(regexString, "dg");
-      // console.log(regex);
+      // regexString = `(${word}\\s|\\s${word}\\s|\\s${word})`;
+      regexString = `^${word}$`;
+      regex = new RegExp(regexString, "dgm");
       
       initialMatches = dictionary.match(regex);
-      // console.log(initialMatches);
       if (initialMatches !== null && initialMatches !== []) {
         if (initialMatches.length === 1)
           return res.status(200).json({ suggestions: [], correct: true });
