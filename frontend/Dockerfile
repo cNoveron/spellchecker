@@ -28,20 +28,31 @@ RUN apt-get install -y curl
 RUN apt-get install -y nodejs
 # RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
-RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
-RUN export NVM_DIR="$HOME/.nvm"
-RUN export NODE_VERSION="lts/fermium"
-ENV NODE_PATH $NVM_DIR/$NODE_VERSION/lib/node_modules
-ENV PATH      $NVM_DIR/$NODE_VERSION/bin:$PATH
-RUN [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-RUN [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+SHELL ["/bin/bash", "--login", "-c"]
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+# ENV NVM_DIR "$HOME/.nvm"
+# RUN export NVM_DIR="$HOME/.nvm" \ 
+# && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
+# && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# RUN export NODE_VERSION="lts/fermium"
+# ENV NODE_PATH $NVM_DIR/$NODE_VERSION/lib/node_modules
+# ENV PATH      $NVM_DIR/$NODE_VERSION/bin:$PATH
 
-RUN bash - nvm install lts/fermium
+# Install Node lts/fermium
+RUN nvm install lts/fermium
 RUN nvm use lts/fermium
-RUN apt-get install -y npm
-RUN npm install -g node-gyp@latest
 
+# Install Python3
+RUN apt-get install -y python3  && ln -sf /usr/bin/python3 /usr/bin/python
+RUN export PYTHONPATH=$PYTHONPATH:/Python3
+RUN export PYTHON=$PYTHON:/usr/bin/python3
+RUN export PATH=$PATH:/usr/bin/python3
+
+RUN apt-get install -y node-gyp
+
+WORKDIR /opt/app
 COPY . /opt/app
 
+RUN /bin/sh . .bash_profile
+
 RUN npm install --no-optional
-RUN npm start
