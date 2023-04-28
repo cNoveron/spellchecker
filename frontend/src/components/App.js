@@ -4,29 +4,46 @@ import Search from "react-searchbox-awesome";
 
 function App() {
   const [filtered, setFiltered] = useState([]);
-  const [previousEvent, setPreviousEvent] = useState(null);
+  const [input, setInput] = useState('');
+  const [buffer, setBuffer] = useState('');
+  const [prevTimestamp, setPrevTimestamp] = useState(0);
+  const [typing, setTyping] = useState(false);
 
   // here the data is filtered as you search
-  const inputHandler = e => {
-    if (previousEvent) previousEvent.preventDefault();
-    setPreviousEvent(e)
-    const input = e.target.value;
-    if (input.length < 3) {
+  const inputHandler = async e => {
+    console.log(e);
+    const value = e.target.value
+    if (e.inputType === "insertText" || e.inputType === "deleteContentBackward") {
+      setTyping(e.timeStamp - prevTimestamp < 400)
+      setInput(value)
+      setPrevTimestamp(e.timeStamp)
+    }
+  };
+
+  useEffect(() => {  
+    if (input.length < 1) {
       setFiltered([]);
     } else {
-      setTimeout(() => {
+      if(!typing)
         fetch(`http://localhost:31337/spellcheck/${input}`)
           .then(async response => {
-              return await response.json()
+            return await response.json()
           })
           .then(r => {
             setFiltered(r.suggestions.map(s => ({'name': s})))
           })
-        },
-        500
-      )
     }
-  };
+  },[input, typing])
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log(performance.now())
+  //     if(typing) {
+  //       setTyping(false)
+  //       setInput(buffer)
+  //     }
+  //   }, 1000)
+  // }, [buffer])
 
   /*
     here you define what happens when you press enter. 
@@ -44,7 +61,6 @@ function App() {
 
   // this is to close the searchlist when you click outside of it.
   const clickOutsideHandler = e => {
-    console.log(e.target);
     if (!e.target.closest(".ReactSearchboxAwesome")) {
       setFiltered([]);
     }
