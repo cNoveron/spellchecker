@@ -13,18 +13,20 @@ function App() {
   const inputHandler = async e => {
     console.log(e);
     const value = e.target.value
+    setBuffer(value)
     if (e.inputType === "insertText" || e.inputType === "deleteContentBackward") {
-      setTyping(e.timeStamp - prevTimestamp < 400)
+      if (e.timeStamp - prevTimestamp < 500 && value.length % 2 === 0) 
+        setTyping(!typing)
       setInput(value)
       setPrevTimestamp(e.timeStamp)
     }
   };
 
-  useEffect(() => {  
+  const queryApi = () => {  
     if (input.length < 1) {
       setFiltered([]);
     } else {
-      if(!typing)
+      if (!typing)
         fetch(`http://localhost:31337/spellcheck/${input}`)
           .then(async response => {
             return await response.json()
@@ -33,7 +35,9 @@ function App() {
             setFiltered(r.suggestions.map(s => ({'name': s})))
           })
     }
-  },[input, typing])
+  }
+
+  useEffect(queryApi, [input, typing])
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -50,8 +54,8 @@ function App() {
     note that the data that is passed to the list element, is stored in the data-set attribute.
   */
   const enterHandler = e => {
-    const searchitem = JSON.parse(e.target.dataset.searchitem);
-    console.log("Enter pressed", searchitem);
+    setInput(buffer)
+    setTyping(false)
   };
 
   // same as above
@@ -79,7 +83,7 @@ function App() {
     width: "calc(80% + (100vw - 100%))",
     color: "#333", // children inherit
     backgroundColor: "white", // children inherit
-    fontSize: "2.5rem", // children inherit
+    fontSize: "2rem", // children inherit
     position: "absolute",
     top: "3rem",
     boxShadow: "0 0 28px 2px rgba(0,0,0,0.1)",
@@ -116,7 +120,7 @@ function App() {
         activeStyle={activeStyle2} // hover, focus, active color.
         placeholder={"Type your words here."} // input placeholder.
         shortcuts={true} // hide or show span elements that display shortcuts.
-        // onEnter={enterHandler} // applies only to the list "li" element
+        onEnter={enterHandler} // applies only to the list "li" element
         onInput={inputHandler}
         onClick={clickHandler} // applies only to the list "li" element
       />

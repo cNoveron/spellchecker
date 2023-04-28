@@ -31,19 +31,22 @@ module.exports = function (word) {
         "z": 2
     }
     let repetition_regexStringsAndFixers = Object.entries(reps)
-    .map(e => [
-        new RegExp(`${e[0]}{${e[1]+1},}`,'gi'),
-        (acc, curr) => acc.replace(curr, e[0].repeat(e[1]))
-    ])
-    // console.log(repetition_regexStringsAndFixers);
+        .map(e => [
+            new RegExp(`${e[0]}{${e[1]+1},}`,'gi'),
+            (acc, curr) => acc.replace(curr, e[0].repeat(e[1]))
+        ])
     let [repetition_regexStrings, repetition_Fixers] = _.unzip(repetition_regexStringsAndFixers)
     let repetition_matches = repetition_regexStrings.map(e => word.match(e))
-    // console.log(repetition_matches);
+
     r = _.zip(repetition_matches, repetition_Fixers)
     r = r.filter(e => e[0] !== null)
-    // console.log(r);
-    r = r.reduce((acc, curr) => curr[0] === null ? null : curr[0].reduce(curr[1], acc), word)
-    // console.log(r);
+    r = r.reduce((acc, curr) => 
+        curr[0] === null 
+            ? null 
+            : curr[0].reduce(curr[1], acc), 
+        word
+    )
+    console.log(r);
     
     return r
 }
