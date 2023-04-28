@@ -2254,6 +2254,18 @@
   "resolved" "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz"
   "version" "1.2.3"
 
+"fuzzy-matching@^0.4.3":
+  "integrity" "sha512-p4aWR0HXYahv6Cn5NSOOlI1rdJcf0WbapyWN8SpAG61Dt5NvVSKE9GYpDwpaIdci9D6aMO1AZT8OdJTLfg0gVw=="
+  "resolved" "https://registry.npmjs.org/fuzzy-matching/-/fuzzy-matching-0.4.3.tgz"
+  "version" "0.4.3"
+  dependencies:
+    "fuzzyset.js" "0.0.1"
+
+"fuzzyset.js@0.0.1":
+  "integrity" "sha512-/FAzX0w4Zd4PaVMM06wSJfDfdkYmIqZs4c6iCUc2icEL8nz6VJqyqlCy6InPZInjf6HadfhkFxYd2a0RDZ3Htg=="
+  "resolved" "https://registry.npmjs.org/fuzzyset.js/-/fuzzyset.js-0.0.1.tgz"
+  "version" "0.0.1"
+
 "gauge@~2.7.3":
   "integrity" "sha512-14x4kjc6lkD3ltw589k0NrPD6cCNTD6CWoVUNpB85+DrtONoZn+Rug6xZU5RvSC4+TZPxA5AnBibQYAvZn41Hg=="
   "resolved" "https://registry.npmjs.org/gauge/-/gauge-2.7.4.tgz"
